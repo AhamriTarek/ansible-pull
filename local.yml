@@ -1,46 +1,33 @@
 ---
-- name: Déploiement web sécurisé (standard entreprise)
+- name: Deploiement Nginx via ansible-pull
   hosts: localhost
   connection: local
   become: yes
   tasks:
-    - name: Mettre à jour le système
+    - name: Installer Nginx
       apt:
+        name: nginx
+        state: present
         update_cache: yes
 
-    - name: Installer Nginx et les outils
-      apt:
-        name:
-          - nginx
-          - htop
-          - ufw
-        state: present
+    - name: Supprimer l'ancienne page par defaut
+      file:
+        path: /var/www/html/index.nginx-debian.html
+        state: absent
 
-    - name: Autoriser HTTP et SSH dans le pare-feu
-      ufw:
-        rule: allow
-        name: "{{ item }}"
-      loop:
-        - OpenSSH
-        - 'Nginx HTTP'
-
-    - name: Activer le pare-feu
-      ufw:
-        state: enabled
-
-    - name: Déployer la page web
+    - name: Deployer la nouvelle page web
       copy:
         content: |
           <!DOCTYPE html>
           <html lang="fr"><head><meta charset="UTF-8"></head>
           <body style="font-family:sans-serif;text-align:center;padding:50px">
-          <h1> Serveur déployé automatiquement par Ansible (TAREK ADMIN)</h1>
-          <p>Mode Pull | Nginx | Pare-feu actif</p>
+          <h1>Serveur deploye automatiquement par Ansible (TAREK ADMIN)</h1>
+          <p>Mode Pull | Nginx | ansible-pull</p>
           </body></html>
-        dest: /var/www/html/index.nginx-debian.html
+        dest: /var/www/html/index.html
 
-    - name: Démarrer Nginx
+    - name: Redemarrer Nginx
       service:
         name: nginx
-        state: started
+        state: restarted
         enabled: yes
