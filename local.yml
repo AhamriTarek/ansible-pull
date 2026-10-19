@@ -34,7 +34,7 @@
           <!DOCTYPE html>
           <html lang="fr"><head><meta charset="UTF-8"></head>
           <body style="font-family:sans-serif;text-align:center;padding:50px">
-          <h1> Serveur déployé automatiquement par Ansible</h1>
+          <h1> Serveur déployé automatiquement par Ansible (TAREK ADMIN)</h1>
           <p>Mode Pull | Nginx | Pare-feu actif</p>
           </body></html>
         dest: /var/www/html/index.nginx-debian.html
