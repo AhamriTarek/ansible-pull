@@ -1,0 +1,46 @@
+---
+- name: Déploiement web sécurisé (standard entreprise)
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Mettre à jour le système
+      apt:
+        update_cache: yes
+
+    - name: Installer Nginx et les outils
+      apt:
+        name:
+          - nginx
+          - htop
+          - ufw
+        state: present
+
+    - name: Autoriser HTTP et SSH dans le pare-feu
+      ufw:
+        rule: allow
+        name: "{{ item }}"
+      loop:
+        - OpenSSH
+        - 'Nginx HTTP'
+
+    - name: Activer le pare-feu
+      ufw:
+        state: enabled
+
+    - name: Déployer la page web
+      copy:
+        content: |
+          <!DOCTYPE html>
+          <html lang="fr"><head><meta charset="UTF-8"></head>
+          <body style="font-family:sans-serif;text-align:center;padding:50px">
+          <h1> Serveur déployé automatiquement par Ansible</h1>
+          <p>Mode Pull | Nginx | Pare-feu actif</p>
+          </body></html>
+        dest: /var/www/html/index.nginx-debian.html
+
+    - name: Démarrer Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
