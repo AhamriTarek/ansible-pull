@@ -4,6 +4,13 @@
   connection: local
   become: yes
   tasks:
+    - name: Arreter et desactiver Apache
+      service:
+        name: apache2
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+
     - name: Installer Nginx
       apt:
         name: nginx
@@ -26,7 +33,7 @@
           </body></html>
         dest: /var/www/html/index.html
 
-    - name: Redemarrer Nginx
+    - name: Demarrer Nginx
       service:
         name: nginx
         state: restarted
