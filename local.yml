@@ -48,4 +48,5 @@
       apt:
         deb: /tmp/google-chrome.deb
         state: present
+        
 - import_playbook: info.yml
