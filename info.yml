@@ -1,0 +1,24 @@
+---
+- name: Deployer la page d'info systeme
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Generer la page d'info systeme
+      copy:
+        content: |
+          <!DOCTYPE html>
+          <html lang="fr">
+          <head><meta charset="UTF-8"><title>Info Serveur</title></head>
+          <body style="font-family:sans-serif;text-align:center;padding:40px;background:#0d2c4b;color:#fff">
+            <h1>Infos du serveur - genere par Ansible (TAREK ADMIN)</h1>
+            <table style="margin:30px auto;font-size:18px;border-collapse:collapse">
+              <tr style="background:#123150"><td style="padding:12px 24px">Nom du serveur</td><td style="padding:12px 24px">{{ ansible_hostname }}</td></tr>
+              <tr style="background:#102a46"><td style="padding:12px 24px">Adresse IP</td><td style="padding:12px 24px">{{ ansible_default_ipv4.address }}</td></tr>
+              <tr style="background:#123150"><td style="padding:12px 24px">Systeme</td><td style="padding:12px 24px">{{ ansible_distribution }} {{ ansible_distribution_version }}</td></tr>
+              <tr style="background:#102a46"><td style="padding:12px 24px">CPU</td><td style="padding:12px 24px">{{ ansible_processor_vcpus }} coeurs</td></tr>
+              <tr style="background:#123150"><td style="padding:12px 24px">RAM</td><td style="padding:12px 24px">{{ ansible_memtotal_mb }} MB</td></tr>
+            </table>
+          </body>
+          </html>
+        dest: /var/www/html/info.html
