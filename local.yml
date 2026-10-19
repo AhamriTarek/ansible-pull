@@ -38,3 +38,13 @@
         name: nginx
         state: restarted
         enabled: yes
+        
+    - name: Telecharger le paquet Google Chrome
+      get_url:
+        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dest: /tmp/google-chrome.deb
+
+    - name: Installer Google Chrome
+      apt:
+        deb: /tmp/google-chrome.deb
+        state: present
